@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-
 import '../constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
 
   static const String id =  'login_screen';
 
-  String email;
-  String password;
-  LoginScreen({})
 
 
   @override
@@ -16,6 +14,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  String  email = '';
+  String  password= '';
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,47 +29,40 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget> [
-                  Container(
-                   child: Image.asset('images/logo.png')
+                  Hero(
+                    tag: 'logo',
+                    child: Container(
+                     child: Image.asset('images/logo.png')
           ),
+                  ),
                  const SizedBox(
             height: 48,
           ),
-                 Container(
-                   decoration: const BoxDecoration(
-                     border: Border(
-                      left: BorderSide(
-                         color: Colors.lightBlueAccent
-                       )
-                     )
-                   ),
-                   child: TextField(
+                 TextField(
+                     keyboardType: TextInputType.emailAddress,
+                     style: const TextStyle(color: Colors.black),
+                     textAlign: TextAlign.center,
             onChanged: (value){
-              //on pressed do something with user input
-              email= value;
+               email= value;
             },
             decoration:  kTextFieldDecoration.copyWith(
               hintText: 'Enter your Email'
             )
           ),
-                 ),
                  const SizedBox(
             height: 12,
           ),
                 TextField(
+                 obscureText: true,
+                  style: const TextStyle(color: Colors.black),
+                  textAlign: TextAlign.center,
             onChanged: (value){
-              //on pressed do something with user input
+             password = value;
             },
-            decoration: InputDecoration(
-                hintText: 'Enter your mail',
-                contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                border: OutlineInputBorder(
-                  borderSide:const BorderSide(color: Colors.lightBlueAccent),
-                  borderRadius: BorderRadius.circular(32),
-                )
-            ),
+            decoration: kTextFieldDecoration.copyWith(
+                hintText: 'Enter your Password'
           ),
+                ),
                 const SizedBox(
             height: 24,
           ),
@@ -75,8 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
             color:Colors.lightBlueAccent,
             borderRadius: BorderRadius.circular(30),
                     child: MaterialButton(
-              onPressed: ( ){
-                Navigator.pushNamed(context, LoginScreen.id);
+              onPressed: ( ) async {
+                try{
+               var newUser = await _auth.signInWithEmailAndPassword(
+                   email: email, password: password);
+               if (newUser != null){
+                 Navigator.pushNamed(context, ChatScreen.id);
+               }}
+                    catch(e){
+                  print (e);
+                    }
               },
               minWidth:200,
               height: 42.0,

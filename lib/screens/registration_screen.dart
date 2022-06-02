@@ -1,4 +1,8 @@
+import 'package:flash_chat_app/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
+import '../components/rounded_button.dart';
+import '../constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegistrationScreen extends StatefulWidget {
 
@@ -10,6 +14,10 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+ final _auth = FirebaseAuth.instance;
+  String  email= '';
+  String  password= '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,54 +39,51 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 48.0,
             ),
             TextField(
+              keyboardType: TextInputType.emailAddress,
+                style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
               onChanged: (value){
-                //do sth with the user input
+                email = value;
               },
-              decoration: InputDecoration(
-                hintText:'Enter your mail',
-                  contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blueAccent),
-                  borderRadius: BorderRadius.circular(32),
+                decoration:  kTextField2Decoration.copyWith(
+                    hintText: 'Enter your mail.'
                 )
-
-            ),
             ),
            const SizedBox(
               height: 12,
             ),
             TextField(
+              obscureText: true,
+              style: TextStyle(color: Colors.black),
+                textAlign: TextAlign.center,
               onChanged: (value){
-                //do sth with the user input
+                password = value;
               },
-              decoration:  InputDecoration(
-                  hintText:'Enter your mail',
-                  contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.blueAccent),
-                    borderRadius: BorderRadius.circular(32),
-                  )
-
-              ),
+              decoration:  kTextField2Decoration.copyWith(
+                hintText: 'Enter your password.'
+              )
             ),
             const SizedBox(
                height: 24,
              ),
-             Material(
-              elevation: 5.0,
-              color:Colors.blueAccent,
-              borderRadius: BorderRadius.circular(30),
-              child: MaterialButton(
-                onPressed: (){
-                //  Navigator.pushNamed(context, RegistrationScreen.id);
-                },
-                minWidth:200 ,
-                height: 42.0,
-                child: const Text('Register', ),
+             RoundedButton(
+               //todo :the onpresssed button needs to work  and take me to the chatscreen
+               colour: Colors.blueAccent,
+               title: 'Register',
+                onPressed: ( ) async {
+                  try {
+                    var newUser = await _auth.createUserWithEmailAndPassword(
+                        email: email, password: password);
+                    if (newUser != null){
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+                  }
+                  catch (e) {
+                    print(e);
+                  }
+                  Navigator.pushNamed(context, ChatScreen.id);
+                }
               ),
-            ),
           ],
         ),
       ),

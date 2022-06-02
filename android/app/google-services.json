@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "841699009523",
+    "project_id": "flash-chat-8f6b1",
+    "storage_bucket": "flash-chat-8f6b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841699009523:android:cb358ce5abab32e0852886",
+        "android_client_info": {
+          "package_name": "com.damilare_akinwale.flash_chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841699009523-20r4g35e994cdg8j0oehne8ir3ifoe2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbxIfY0ftWcrAxi_qj2Ne4C6Ys5FeUAfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841699009523-20r4g35e994cdg8j0oehne8ir3ifoe2t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

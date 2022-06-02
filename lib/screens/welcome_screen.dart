@@ -1,7 +1,8 @@
 import 'package:flash_chat_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
-
+import '../components/rounded_button.dart';
 import 'login_screen.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 
 class WelcomeScreen extends StatefulWidget {
@@ -10,14 +11,57 @@ class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState( );
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
+
+  AnimationController ? controller;
+  Animation ? animation;
+
+
+  @override
+  void initState( ) {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_){
+    controller = AnimationController(
+      duration: Duration(seconds:1),
+        vsync: this,
+      upperBound: 100
+    );
+
+ //   animation = CurvedAnimation(parent: controller, curve: Curves.decelerate);
+    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white).animate(controller!);
+
+    controller?.forward( );
+
+    //to make the animation go back and forth
+    // animation.addStatusListener((status) {
+    //   if (status == AnimationStatus.completed){
+    //     controller.reverse(from: 1.0);
+    //   }else if (status == AnimationStatus.dismissed){
+    //     controller.forward( );
+    //   }
+    // });
+
+    controller?.addListener(() {
+      setState(() {
+      });
+       print(animation?.value);
+    });
+  });
+    }
+
+  @override
+  void dispose( ) {
+    controller?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: animation?.value,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -34,54 +78,36 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           height: 60,
                                   ),
                     ),
-                         const Text  (
-                         'Flash Chat',
-                style: TextStyle(
-                  color: Colors.black,
-                fontSize: 45.0,
-                fontWeight: FontWeight.w900,
-                            ),
-                         )
+                 AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText( 'Flash Chat',  textStyle: const TextStyle(
+              color: Colors.black, fontSize: 45.0,
+              fontWeight: FontWeight.w900,) ,
+                 ),
              ],
             ),
+          ],
+           ),
            const SizedBox(
               height: 48.0,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color:Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30),
-                child: MaterialButton(
-                  onPressed: (){
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  minWidth:200 ,
-                  height: 42.0,
-                  child: Text('Log In', ),
-                ),
-              ),
+            RoundedButton(
+              title: 'Log in',
+              colour: Colors.blueAccent,
+              onPressed: ( ){
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color:Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30),
-                child: MaterialButton(
-                  onPressed: (){
-                   Navigator.pushNamed(context, RegistrationScreen.id);
-                  },
-                  minWidth:200 ,
-                  height: 42.0,
-                  child: Text('Register', ),
-                ),
-              ),
-            )
+            RoundedButton(
+              title: 'Register',
+              colour: Colors.lightBlueAccent,
+              onPressed: (){
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },
+            ),
           ],
         ),
-      ),
+    )
     );
   }
 }
