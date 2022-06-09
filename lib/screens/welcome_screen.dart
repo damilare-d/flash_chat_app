@@ -71,12 +71,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
            Row(
              //mainAxisAlignment: MainAxisAlignment.spaceAround,
              children : [
-                    Hero(
-                      tag: 'logo',
-                      child: Container(
-                          child: Image.asset('images/logo.png'),
-                          height: 60,
-                                  ),
+                    Flexible(
+                      child: Hero(
+                        tag: 'logo',
+                        child: Container(
+                            child: Image.asset('images/logo.png'),
+                            height: 60,
+                                    ),
+                      ),
                     ),
                  AnimatedTextKit(
           animatedTexts: [
