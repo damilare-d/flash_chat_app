@@ -1,7 +1,7 @@
 # flash_chat_app
 
 an app by angela yu to learn firebase and etc.
-
+Application that allows user chat in realtime  as In a group
 ## Getting Started
 
 This project is a starting point for a Flutter application.
